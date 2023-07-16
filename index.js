@@ -1,31 +1,37 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
-import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
-import errorHandler from './middleware/error';
-
-const PORT = process.env.PORT || 5000;
-
-const app = express();
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 Mins
-  max: 100,
-});
-app.use(limiter);
-app.set('trust proxy', 1);
-
-// Enable cors
-app.use(cors());
-
-// Set static folder
-app.use(express.static('public'));
+import apicache from 'apicache'
 
 // Routes
-app.use('/api', require('./routes'));
+import proxyRouter from './api/middlewares/proxyRouter.js';
 
-// Error handler middleware
-app.use(errorHandler);
+// Middlewares
+import authenticate from './api/middlewares/authenticate.js';
+import rateLimiter from './api/middlewares/rateLimiter.js';
+import incomingLogger from './api/middlewares/incomingLogger.js';
+import outgoingLogger from './api/middlewares/outgoingLogger.js';
+import errorHandler from './api/middlewares/errorHandler.js'
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+const app = express();
+const cache = apicache.middleware
+app.set('trust proxy', 1);
+
+app.use(bodyParser.json());
+app.use(cors());
+app.use(cache('1 minute'))
+
+app.use(rateLimiter);
+app.use(incomingLogger); // Logging middleware for incoming requests
+app.use(outgoingLogger); // Logging middleware for outgoing requests
+app.use('/api', authenticate); // Authenticate middleware for '/api' route
+app.use(['/api', '/demo'], proxyRouter); // Proxy router middleware
+app.use(errorHandler) // Error Handler middleware
+
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000/api');
+});
+
+
+
