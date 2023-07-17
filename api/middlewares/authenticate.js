@@ -1,15 +1,25 @@
 import utils from '../utils/helper.js';
-const API_KEY = '123';
+import { firestoreDb } from '../utils/firebase.js';
 
-const authenticate = (req, res, next) => {
+const authenticator = async (req, res, next) => {
     const apiKey = req.query.apikey;
-  
-    if (!apiKey || apiKey !== API_KEY) {
-        const err = utils.createError({status: 401})
+    const apikeys = await firestoreDb.getDocIds('Keys')
+
+    if (!apiKey || !apikeys.includes(apiKey)) {
+        const err = utils.createError({ status: 401 });
         res.status(err.error.status).json(err);
+        req.logData.gatewayRequest.error = err.error.message
+        await firestoreDb.createDoc(req.logPath, req.id, req.logData)
+    } else {
+        req.logData.gatewayRequest.authentication = "success";
+        await firestoreDb.createDoc(req.logPath, req.id, req.logData)
+        next();
     }
-    next();
 };
   
-export default authenticate
+export default authenticator
+
+
+
+
   

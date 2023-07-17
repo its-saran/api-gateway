@@ -31,21 +31,22 @@ const utils = {
     startTime: () => moment(),
     endTime: () => moment(),
     elapseTime : (startTime, endTime) => moment.duration(endTime.diff(startTime)).asSeconds(),
-    logMessage : (id, message, consoleObject) => {
-        console.log(`${utils.time()} | ${id} | ${message}`)
-        consoleObject[utils.timeMilli()] = message
+    logMessage : (serviceName, id, message, consoleObject) => {
+        console.log(`${serviceName} | ${utils.time()} | ${id} | ${message}`)
+        consoleObject[utils.timeMilli()] = `${serviceName} | ${message}`
     },
-    errorMessage : (id, message, consoleObject) => {
-        console.error(`${utils.time()} | ${id} | ${message}`)
-        consoleObject[utils.timeMilli()] = message
+    errorMessage : (serviceName, id, message, consoleObject) => {
+        console.error(`${serviceName} | ${utils.time()} | ${id} | Error: ${message}`)
+        consoleObject[utils.timeMilli()] = `${serviceName} | ${message}`
     },
-    reqResMessage: (message, consoleObject) => {
-        console.log(`${utils.time()} | ${message}`)
-        consoleObject[utils.timeMilli()] = message
+    reqResMessage: (serviceName, message, consoleObject) => {
+        console.log(`${serviceName} | ${utils.time()} | ${message}`)
+        consoleObject[utils.timeMilli()] = `${serviceName} | ${message}`
     },
     addId : (array, Idkey, Idvalue) => array.map(item => ({...item, [Idkey]: `${Idvalue}`})),
     addUniqueId : (array, Idkey, IdvaluePrefix) => array.map(item => ({...item, [Idkey]: `${IdvaluePrefix}`+`${uuidv4()}`})),
-    addObjectInArray : (array, key, value) => array.map(item => ({...item, [key]: value}))
+    addObjectInArray : (array, key, value) => array.map(item => ({...item, [key]: value})),
+    capitalizeString: (string) => string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 export default utils;

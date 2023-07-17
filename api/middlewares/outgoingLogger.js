@@ -64,16 +64,19 @@
 import morgan from 'morgan';
 import utils from '../utils/helper.js';
 
-const formatMessage = (tokens, req, res) => {
-  const consoleLog = req.consoleLog;
-  const referenceId = req.id;
-  const totalTime = parseFloat(tokens['total-time'](req, res) / 1000).toFixed(2);
-  const responseStatus = tokens.status(req, res) || 'unknown';
-  const responseContentLength = tokens.res(req, res, 'content-length') || 0;
-  const memoryUsage = (process.memoryUsage().rss / (1024 * 1024)).toFixed(2); // Get memory usage in megabytes with 2 decimal places
-  const outgoingLog = `Response | Reference ID: ${referenceId} | Status: ${responseStatus} | Content Length: ${responseContentLength} bytes | Response Time: ${totalTime} s | Memory Usage: ${memoryUsage} MB`;
-  utils.reqResMessage(outgoingLog, consoleLog);
+const formatMessage = (config, tokens, req, res) => {
+    const serviceName = config.serviceName;
+    const consoleLogs = req.consoleLogs;
+    const referenceId = req.id;
+    const totalTime = parseFloat(tokens['total-time'](req, res) / 1000).toFixed(2);
+    const responseStatus = tokens.status(req, res) || 'unknown';
+    const responseContentLength = tokens.res(req, res, 'content-length') || 0;
+    const memoryUsage = (process.memoryUsage().rss / (1024 * 1024)).toFixed(2); // Get memory usage in megabytes with 2 decimal places
+    const outgoingLog = `Response | Reference ID: ${referenceId} | Status: ${responseStatus} | Content Length: ${responseContentLength} bytes | Response Time: ${totalTime} s | Memory Usage: ${memoryUsage} MB`;
+    utils.reqResMessage(serviceName, outgoingLog, consoleLogs);
 };
 
-const outgoingLogger = morgan(formatMessage);
+const outgoingLogger = (config) => morgan(formatMessage.bind(null, config));
+
 export default outgoingLogger;
+

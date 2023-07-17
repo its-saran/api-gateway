@@ -208,10 +208,20 @@ const firestoreDb = {
     },
     createDoc: async (collectionPath, documentId, data) => {
         try {
-          const docRef = firestoreAdmin.doc(`${collectionPath}/${documentId}`);
-          await docRef.set(data);
+            const docRef = firestoreAdmin.doc(`${collectionPath}/${documentId}`);
+            await docRef.set(data);
         } catch (error) {
-          console.error(error);
+            console.error(error);
+        }
+    },
+    getDocIds: async(collectionName) => {
+        try {
+            const collRef = firestoreAdmin.collection(collectionName);
+            const docs = await collRef.listDocuments();
+            const docIds = docs.map((document) => document.id);
+            return docIds
+        } catch (error) {
+            console.error(error);
         }
     }
 }

@@ -1,8 +1,12 @@
 import rateLimit from 'express-rate-limit';
 
-const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 5,
-});
+const rateLimiter = (config) => {
+  const limiter = rateLimit({
+    windowMs: config.perMinutes * 60 * 1000, 
+    max: config.maxRequests,
+  });
 
-export default limiter;
+  return limiter;
+};
+
+export default rateLimiter;
