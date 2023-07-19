@@ -2,6 +2,7 @@ import utils from '../utils/helper.js'
 import { firestoreDb } from '../utils/firebase.js';
 
 const incomingLogger = (config) => async (req, res, next) => {
+    req.startTimestamp = Date.now();
     req.log = {
         gatewayReq: {
             method: req.method,
