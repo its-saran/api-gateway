@@ -14,22 +14,6 @@ const realtimeAdmin = admin.database();
 
 
 const firestoreDb = {
-    getDoc: async (collectionName, documentId) => {
-        try {
-          const docRef = firestoreAdmin.collection(collectionName).doc(documentId);
-          const snapshot = await docRef.get();
-
-          if (snapshot.exists) {
-            const data = snapshot.data();
-            return data;
-          } else {
-            return null;
-          }
-        } catch (error) {
-          console.error('Error retrieving Firestore data:', error);
-          throw error;
-        }
-    },
     getByKey: async (collectionName, fieldName) => {
       try {
         const snapshot = await firestoreAdmin.collection(collectionName).where(fieldName, '!=', null).get();
@@ -214,7 +198,23 @@ const firestoreDb = {
             console.error(error);
         }
     },
-    getDocIds: async(collectionName) => {
+    getDoc: async (collectionPath, documentId) => {
+        try {
+            const docRef = firestoreAdmin.collection(collectionPath).doc(documentId);
+            const snapshot = await docRef.get();
+
+            if (snapshot.exists) {
+              const data = snapshot.data();
+              return data;
+            } else {
+              return null;
+            }
+        } catch (error) {
+            console.error('Error retrieving Firestore data:', error);
+            throw error;
+        }
+  },
+    getDocIds: async (collectionName) => {
         try {
             const collRef = firestoreAdmin.collection(collectionName);
             const docs = await collRef.listDocuments();

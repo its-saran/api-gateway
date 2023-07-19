@@ -2,42 +2,42 @@ import utils from '../utils/helper.js'
 import { firestoreDb } from '../utils/firebase.js';
 
 const incomingLogger = (config) => async (req, res, next) => {
-    req.time = utils.time()
-    req.consoleLogs = {}
-    req.logData = {
-        gatewayRequest: {
+    req.log = {
+        gatewayReq: {
             method: req.method,
             url: req.originalUrl,
             ip: req.ip,
-            service: 'Unknown',
-            serviceType: 'Unknown',
-            apiType: 'Unknown'
+            time: utils.time(),
+            userAgent: req.headers['user-agent'],
+            service: 'unknown',
+            apiType: 'unknown',
+            serviceType: 'unknown',
+            apiRoute: 'unknown'
         }
     }
+    req.log.console = {}
+    req.log.service = {}
+    req.log.gatewayRes = {}
     let idSuffix = '-UNK'
-    let apiType
-    let service
 
     const serviceName = config.serviceName
     const endpoint = Object.keys(config.Endpoints).find(key => req.url.includes(key));
 
     if (endpoint) {
         const endpointData = config.Endpoints[endpoint];
-        req.logData.gatewayRequest.serviceType  = endpointData.serviceType;
-        req.logData.gatewayRequest.service  = endpointData.service;
-        req.logData.gatewayRequest.apiType = endpointData.apiType;
+        req.log.gatewayReq.serviceType  = endpointData.serviceType;
+        req.log.gatewayReq.service  = endpointData.service;
+        req.log.gatewayReq.apiType = endpointData.apiType;
+        req.log.gatewayReq.apiRoute = endpointData.apiRoute;
         idSuffix = endpointData.idSuffix;
     }
 
-    req.id = utils.timeId() + idSuffix
-    apiType= utils.capitalizeString(req.logData.gatewayRequest.apiType)
-    service = utils.capitalizeString(req.logData.gatewayRequest.service)
-    req.logPath = `Logs/${service}/${apiType}Logs`
-
-    await firestoreDb.createDoc(req.logPath, req.id, req.logData)
-    const requestLog = `Request | Reference ID: ${req.id} | Method: ${req.method} | URL: ${req.originalUrl} | IP: ${req.ip} `
-    utils.reqResMessage(serviceName, requestLog, req.consoleLogs)
-
+    req.log.id = utils.timeId() + idSuffix
+    req.log.path = `Logs/${utils.capitalizeString(req.log.gatewayReq.service)}/${utils.capitalizeString(req.log.gatewayReq.apiType)}Logs`
+    await firestoreDb.createDoc(req.log.path, req.log.id, req.log)
+    
+    const requestLog = `Request | Reference ID: ${req.log.id} | Method: ${req.method} | URL: ${req.originalUrl} | IP: ${req.ip} `
+    utils.reqResMessage(serviceName, requestLog, req.log.console)
     next();
 };
   
