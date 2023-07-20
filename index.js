@@ -25,8 +25,8 @@ const startGateway = async () => {
     app.use(jsonParser)
     app.use(cors());
     app.use(cache);
-    app.use(incomingLog); // Logging middleware for incoming requests
-    app.use(outgoingLog); // Logging middleware for outgoing requests
+    app.use(incomingLog); // Logging middleware for requests
+    app.use(outgoingLog); // Logging middleware for responses
     app.use('/api', authenticate); // Authenticator middleware for '/api' route
     app.use('/demo', rateLimit); // Rate limiter middleware for '/demo' route
     app.use(['/api', '/demo'], proxyRoute); // Proxy router middleware
