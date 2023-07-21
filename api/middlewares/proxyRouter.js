@@ -12,10 +12,7 @@ const createProxyRouter = (target) => {
             return newPath;
         },
         onProxyReq: (proxyReq, req, res) => {
-            const log = {
-                path: req.log.path,
-                id: req.log.id,
-            }
+            const log = req.log
             if (log) {
               const jsonData = JSON.stringify(log);
               proxyReq.setHeader('Content-Type', 'application/json');
