@@ -28,15 +28,14 @@ const utils = {
     timeMilli: () => moment().tz('Asia/Kolkata').format('DD-MM-YYYY h:mm:ss.SSS A'),
     timeId: () => moment().tz('Asia/Kolkata').format('YYYYMMDD-hhmmssSSS'),
     timeStamp: () => moment().tz('Asia/Kolkata').toISOString(),
-    startTime: () => moment(),
-    endTime: () => moment(),
+    moment: () => moment(),
     elapseTime : (startTime, endTime) => moment.duration(endTime.diff(startTime)).asSeconds(),
     logMessage : (serviceName, id, message, consoleObject) => {
         console.log(`${serviceName} | ${utils.time()} | ${id} | ${message}`)
         consoleObject[utils.timeMilli()] = `${serviceName} | ${message}`
     },
     errorMessage : (serviceName, id, message, consoleObject) => {
-        console.error(`${serviceName} | ${utils.time()} | ${id} | Error: ${message}`)
+        console.error(`${serviceName} | ${utils.time()} | ${id} | ${message}`)
         consoleObject[utils.timeMilli()] = `${serviceName} | ${message}`
     },
     reqResMessage: (serviceName, message, consoleObject) => {
