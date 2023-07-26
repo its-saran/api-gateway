@@ -4,13 +4,6 @@ const createProxyRouter = (target) => {
     const proxyRouter = createProxyMiddleware({
         target: target,
         changeOrigin: true,
-        pathRewrite: (path, req) => {
-            const apiRoute = req.log.gatewayReq.apiRoute
-            const service = req.log.gatewayReq.service
-            const newPath = path.replace(`/${apiRoute}/${service}`, `/${apiRoute}`).replace(/&?apikey=[^&]*/g, '');
-            // const newPath = path.replace(`/${apiRoute}/${service}`, `/${service}/${apiRoute}`).replace(/&?apikey=[^&]*/g, '');
-            return newPath;
-        },
         onProxyReq: (proxyReq, req, res) => {
             const log = req.log
             if (log) {
@@ -27,6 +20,5 @@ const createProxyRouter = (target) => {
 };
 
 export default createProxyRouter;
-
 
 

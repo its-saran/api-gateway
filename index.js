@@ -17,7 +17,7 @@ const startGateway = async () => {
     const incomingLog = incomingLogger(config)
     const outgoingLog = outgoingLogger(config)
     const rateLimit = rateLimiter(config.rateLimit)
-    const proxyRoute = proxyRouter(config.localTarget)
+    const proxyRoute = proxyRouter(config.target)
 
     const app = express()
     app.set('trust proxy', 1);

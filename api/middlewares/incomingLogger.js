@@ -21,6 +21,8 @@ const incomingLogger = (config) => async (req, res, next) => {
     req.log.gatewayRes = {}
     let idSuffix = '-UNK'
 
+    console.log(`Request url: ${req.url}`)
+
     const serviceName = config.serviceName
     const endpoint = Object.keys(config.Endpoints).find(key => req.url.includes(key));
 
@@ -35,10 +37,11 @@ const incomingLogger = (config) => async (req, res, next) => {
 
     req.log.id = utils.timeId() + idSuffix
     req.log.path = `Logs/${utils.capitalizeString(req.log.gatewayReq.service)}/${utils.capitalizeString(req.log.gatewayReq.apiType)}Logs`
-    await firestoreDb.createDoc(req.log.path, req.log.id, req.log)
-    
+
     const requestLog = `Request | Reference ID: ${req.log.id} | Method: ${req.method} | URL: ${req.originalUrl} | IP: ${req.ip} `
     utils.reqResMessage(serviceName, requestLog, req.log.console)
+
+    await firestoreDb.createDoc(req.log.path, req.log.id, req.log)
     next();
 };
   
