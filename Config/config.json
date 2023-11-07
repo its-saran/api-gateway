@@ -1,0 +1,27 @@
+{
+    "serviceName": "API Gateway",
+    "apicache": "1 minute",
+    "rateLimit": {
+      "maxRequests": 5,
+      "perMinutes": 10
+    },
+    "localTarget": "http://localhost:5000",
+    "target": "https://asia-south1.gateway.cloudfunctions.net/",
+    "Endpoints": {
+      "/api/naukri/scrape": {
+        "apiRoute": "api",
+        "apiType": "pro",
+        "idSuffix": "-N-SCR",
+        "serviceType": "scrape",
+        "service": "naukri"
+      },
+      "/demo/naukri/scrape": {
+        "apiRoute": "demo",
+        "apiType": "demo",
+        "idSuffix": "-N-SCR",
+        "service": "naukri",
+        "serviceType": "scrape"
+      }
+    }
+  }
+  
