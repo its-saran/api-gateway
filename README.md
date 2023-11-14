@@ -30,7 +30,7 @@ A feature-rich API Gateway built with Express and Node.js, designed to handle va
 2. Install dependencies:
 
     ```bash
-    cd express-api-gateway
+    cd api-gateway
     npm install
 
 3. Configure API Gateway:
