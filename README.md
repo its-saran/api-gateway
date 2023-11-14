@@ -1,5 +1,7 @@
 # API Gateway
 
+![Project Cover](/images/api_gateway.jpg)
+
 A feature-rich API Gateway built with Express and Node.js, designed to handle various aspects of microservices architectures. This gateway includes inbuilt authentication, proxy routing, rate limiting, logging, and monitoring.
 
 ## Features
@@ -33,14 +35,15 @@ A feature-rich API Gateway built with Express and Node.js, designed to handle va
 
 3. Configure API Gateway:
 
-    Customize the endpoints, rate limiting settings, and other configurations in config/config.json.
+    - Customize the endpoints, rate limiting settings, and other configurations in config/config.json.
+
+    - Example endpoints are shown in config.json
 
 4. Start the server:
 
     ```bash=
     npm start
     ```
-
     Your API Gateway is now running at http://localhost:3000.
 
 
