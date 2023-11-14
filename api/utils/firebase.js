@@ -2,10 +2,10 @@ import admin from 'firebase-admin';
 import fs from 'fs';
 
 
-const serviceAccount = JSON.parse(fs.readFileSync('./secrets/whrilapi-firebase.json'));
+const serviceAccount = JSON.parse(fs.readFileSync('./secrets/firebase.json'));
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL:'https://whrilapi-default-rtdb.firebaseio.com/'
+    databaseURL:'https://example-database.com/'
 });
 
 

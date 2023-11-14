@@ -20,6 +20,9 @@ A feature-rich API Gateway built with Express and Node.js, designed to handle va
 
 - Node.js and npm installed
 
+- Firebase service account keys: Place your Firebase service account keys in the `secrets/firebase.json` file.
+
+
 ## Getting Started
 
 1. Clone the repository:
