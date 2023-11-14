@@ -25,7 +25,7 @@ A feature-rich API Gateway built with Express and Node.js, designed to handle va
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/express-api-gateway.git
+   git clone https://github.com/its-saran/api-gateway.git
 
 2. Install dependencies:
 
