@@ -39,6 +39,7 @@ A feature-rich API Gateway built with Express and Node.js, designed to handle va
 
     ```bash=
     npm start
+    ```
 
     Your API Gateway is now running at http://localhost:3000.
 
